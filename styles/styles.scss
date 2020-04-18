@@ -1,0 +1,20 @@
+$app-color: #333;
+$font-color: #fff;
+body {
+  background-color: $app-color;
+  height: 100vh;
+}
+
+#__next,
+.app {
+  height: 100%;
+  height: 100%;
+}
+
+.app {
+  color: $font-color;
+  display: flex;
+  font-size: 50px;
+  justify-content: center;
+  align-items: center;
+}
