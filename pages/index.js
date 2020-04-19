@@ -1,61 +1,39 @@
-const Index = () => (
-  <>
-    <div className="product-list">
-      <div className="product">
-        <img src="https://via.placeholder.com/300x200" />
-        <h1>Neque porro quisquam est qui dolorem ipsum quia dolor sit amet</h1>
-        <h2>Rp. 250.000,-</h2>
-        <p>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book. It has survived not only
-          five centuries, but also the leap
-        </p>
-        <div className="action">
-          <button>Add Wishlist</button> &nbsp;
-          <button>Add Cart</button> &nbsp;
-          <button>View</button>
-        </div>
-      </div>
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProducts, productsSelector } from "../src/slices/products.js";
 
-      <div className="product">
-        <img src="https://via.placeholder.com/300x200" />
-        <h1>Neque porro quisquam est qui dolorem ipsum quia dolor sit amet</h1>
-        <h2>Rp. 250.000,-</h2>
-        <p>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book. It has survived not only
-          five centuries, but also the leap
-        </p>
-        <div className="action">
-          <button>Add Wishlist</button> &nbsp;
-          <button>Add Cart</button> &nbsp;
-          <button>View</button>
-        </div>
-      </div>
+import Product from "../src/components/Product.js";
+import FormSearch from "../src/components/FormSearch.js";
 
-      <div className="product">
-        <img src="https://via.placeholder.com/300x200" />
-        <h1>Neque porro quisquam est qui dolorem ipsum quia dolor sit amet</h1>
-        <h2>Rp. 250.000,-</h2>
-        <p>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book. It has survived not only
-          five centuries, but also the leap
-        </p>
-        <div className="action">
-          <button>Add Wishlist</button> &nbsp;
-          <button>Add Cart</button> &nbsp;
-          <button>View</button>
-        </div>
-      </div>
-    </div>
-  </>
-);
+const Index = () => {
+  const dispatch = useDispatch();
+  const {
+    products,
+    searchKeyword,
+    categoryFilter,
+    loading,
+    hasErrors,
+  } = useSelector(productsSelector);
+
+  useEffect(() => {
+    dispatch(fetchProducts({ searchKeyword, categoryFilter }));
+  }, [dispatch]);
+
+  const renderProduct = () => {
+    if (loading) return <p>Loading...</p>;
+    if (hasErrors) return <p>produk tidak ditemukan...</p>;
+
+    return products.map((product) => (
+      <Product key={product.productId} product={product} />
+    ));
+  };
+
+  return (
+    <>
+      <FormSearch />
+      <div className="product-list">{renderProduct()}</div>
+    </>
+  );
+};
 
 export default Index;
